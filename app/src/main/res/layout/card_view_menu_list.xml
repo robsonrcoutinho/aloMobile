@@ -26,13 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="13sp"
+            android:textStyle="bold"
             android:textColor="@color/accent_color"
             android:gravity="center"
             android:layout_below="@+id/item_foto"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/color_primary"/>
+            android:background="@color/color_grid_view"/>
 
     </RelativeLayout>
 

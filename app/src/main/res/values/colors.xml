@@ -6,6 +6,7 @@
     <color name="color_primary">#9ACD32</color>
     <color name="color_layouts">#e8f5e9</color>
     <color name="accent_color">#ffffff</color>
+    <color name="color_grid_view">#00BFFF</color>
 
 
 </resources>
