@@ -37,16 +37,17 @@
         android:background="@drawable/seletor_verde"
         android:hint="Endereço de Email"
         android:layout_margin="10dp"
-        android:inputType="text"
-        android:textColor="#000000"
+        android:inputType="textEmailAddress"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:gravity="center"/>
+
 
     <EditText
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:background="@drawable/seletor_verde"
-        android:text="123456789"
+        android:text="1111111111"
         android:textColor="#FFFFFF"
         android:layout_margin="10dp"
         android:inputType="textPassword"
