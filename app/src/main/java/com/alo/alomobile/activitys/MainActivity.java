@@ -1,6 +1,8 @@
 package com.alo.alomobile.activitys;
 
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import com.alo.alomobile.R;
+import com.alo.alomobile.app.Util;
 import com.alo.alomobile.fragments.ManagerUserFragment;
 import com.alo.alomobile.fragments.MenuFragment;
 import java.util.ArrayList;
@@ -27,12 +30,25 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private SharedPreferences prefs;
+    private String myId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.icons_tab_layout);
+
+        prefs = getSharedPreferences("alo_prefs", MainActivity.MODE_PRIVATE);
+
+        if (Util.existeToken(prefs)) { // existe usuário associado ao device
+            myId = prefs.getString("token", null);
+
+        } else { // não existe usuário associado ao device
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            MainActivity.this.startActivity(intent);
+        }
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
