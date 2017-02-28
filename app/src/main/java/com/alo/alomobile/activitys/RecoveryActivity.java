@@ -22,49 +22,45 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @version 1.0
  * @Author Robson Coutinho
- * @Since 23/02/2017
+ * @Since 26/02/2017
  */
 
-public class LoginActivity extends AppCompatActivity {
-    private static String TAG = LoginActivity.class.getSimpleName();
+public class RecoveryActivity extends AppCompatActivity{
+    private static String TAG = RecoveryActivity.class.getSimpleName();
     private EditText etEmail;
-    private EditText etPassword;
-    private HashMap<String, String> params;
+    private Button btnEnviar;
+    private TextView tvLogin;
+    private TextView tvRegistrar;
     private ProgressDialog pDialog;
-    private TextView registrar;
-    private TextView tvRecSenha;
-    private Button btnLogin;
-
+    private HashMap<String, String> params;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstancedState){
+        super.onCreate(savedInstancedState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        setContentView(R.layout.login_layout);
+        setContentView(R.layout.recovery_senha_layout);
 
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        registrar = (TextView) findViewById(R.id.tvRegistrar);
-        tvRecSenha = (TextView) findViewById(R.id.tvRecSenha);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        etEmail = (EditText) findViewById(R.id.etEmailRec);
+        btnEnviar = (Button) findViewById(R.id.btnEnviar);
+        tvLogin = (TextView) findViewById(R.id.tvLogin);
+        tvRegistrar =(TextView) findViewById(R.id.tvRegistrarRec);
 
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 
-
-        registrar.setOnClickListener(new View.OnClickListener() {
+        tvRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegistrarActivity.class);
@@ -72,15 +68,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvRecSenha.setOnClickListener(new View.OnClickListener() {
+
+        btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RecoveryActivity.class);
-                startActivity(intent);
+                recoverySenha();
             }
         });
-
-
     }
 
     @Override
@@ -102,49 +96,51 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void login(){
-        Log.i(TAG, ".login()");
+
+    public void recoverySenha(){
+        Log.i(TAG, ".recoverySenha()");
 
         if (!validate()) {
             return;
         }
-        btnLogin.setEnabled(false);
+        btnEnviar.setEnabled(false);
 
-        pDialog = new ProgressDialog(LoginActivity.this,
+
+        pDialog = new ProgressDialog(RecoveryActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         pDialog.setIndeterminate(true);
-        pDialog.setMessage("Autenticando...");
+        pDialog.setMessage("Solicitando...");
         pDialog.setCancelable(false);
         pDialog.show();
 
         params = new HashMap<String,String>();
         params.put("email", etEmail.getText().toString());
-        params.put("password", etPassword.getText().toString());
+
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
-                Consts.REQUEST_LOGIN,
+                Consts.REQUEST_RESET_PASSWORD,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i(TAG, "Token Response: " + response.toString());
+                        Log.i(TAG, "Status recovery senha:" + response.toString());
                         hidePDialog();
-                     try{
-                        String user_token = response.getString("token");
-                        getSharedPreferences("alo_prefs", getApplicationContext().MODE_PRIVATE).edit().remove("alo_prefs").apply();
-                        getSharedPreferences("alo_prefs", getApplicationContext().MODE_PRIVATE).edit()
-                                .putString("token", user_token).apply();
+                        try{
+                            String status = response.getString("status");
+                            Log.i("status", String.valueOf(status));
 
-                        Log.i("token", String.valueOf(user_token));
+                            if(status.equals("sucesso")){
+                                Intent intent = new Intent(RecoveryActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }else {
+                                onLoginFailed();
+                            }
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        };
 
-                    }catch (JSONException e) {
-                        e.printStackTrace();
-                    };
-
-                }
+                    }
 
                 },
                 new Response.ErrorListener() {
@@ -157,14 +153,13 @@ public class LoginActivity extends AppCompatActivity {
 
         Application.getInstance().addToRequestQueue(req);
 
-
     }
+
 
     public boolean validate() {
         boolean valid = true;
 
         String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             etEmail.setError("Digite um endereço de e-mail válido");
@@ -173,20 +168,12 @@ public class LoginActivity extends AppCompatActivity {
             etEmail.setError(null);
         }
 
-        if (password.isEmpty()) {
-            etPassword.setError("Campo senha não pode ser vazio!");
-            valid = false;
-        } else {
-            etPassword.setError(null);
-        }
-
         return valid;
     }
 
-
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Dados de acesso incorretos!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
         hidePDialog();
-        btnLogin.setEnabled(true);
+        btnEnviar.setEnabled(true);
     }
 }

@@ -7,6 +7,6 @@
     <color name="color_layouts">#e8f5e9</color>
     <color name="accent_color">#ffffff</color>
     <color name="color_grid_view">#00BFFF</color>
-
+    <color name="progress_dialog">#808080</color>
 
 </resources>

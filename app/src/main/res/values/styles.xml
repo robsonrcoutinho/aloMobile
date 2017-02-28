@@ -12,7 +12,7 @@
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/color_primary</item>
         <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/progress_dialog</item>
     </style>
 
 </resources>

@@ -40,6 +40,14 @@
             android:screenOrientation="portrait" >
         </activity>
 
+        <activity android:name="com.alo.alomobile.activitys.RecoveryActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity android:name="com.alo.alomobile.activitys.RegistrarActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
     </application>
 
 </manifest>
