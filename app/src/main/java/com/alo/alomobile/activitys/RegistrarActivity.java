@@ -2,6 +2,7 @@ package com.alo.alomobile.activitys;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 
 import com.alo.alomobile.R;
 
@@ -12,6 +13,20 @@ import com.alo.alomobile.R;
  */
 
 public class RegistrarActivity extends AppCompatActivity{
+    //private EditText
+    /*
+    razao_social
+    nome_fantasia
+    role
+    rua
+    telefone
+    cidade
+    uf
+    cnpj_cpf
+    name
+    email
+    password
+    */
 
     @Override
     public void onCreate(Bundle savedInstancedState){

@@ -1,15 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.alo.alomobile.activitys.LoginActivity">
 
     <TextView
-        android:id="@+id/tvRecSenha"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Cadastrar"
         android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:text="Registrando usuário"/>
+        android:gravity="center"
+        android:textSize="25sp"/>
 
+
+    <EditText
+        android:id="@+id/etRazao_social"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:background="@drawable/seletor_register"
+        android:hint="Razao Social"
+        android:textSize="12dp"
+        android:layout_margin="4dp"
+        android:inputType="text"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/etNome_fantasia"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:background="@drawable/seletor_register"
+        android:hint="Nome Fantasia"
+        android:layout_margin="4dp"
+        android:inputType="text"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/etCnpj_cpf"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:background="@drawable/seletor_register"
+        android:hint="CNPJ ou CPF"
+        android:layout_margin="4dp"
+        android:inputType="number"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/etEndereco"
+        android:layout_width="300dp"
+        android:textSize="12dp"
+        android:layout_height="30dp"
+        android:background="@drawable/seletor_register"
+        android:hint="Endereço"
+        android:layout_margin="4dp"
+        android:inputType="text"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="4dp"
+        android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etCidade"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@drawable/seletor_register"
+                android:hint="Cidade"
+                android:textSize="12dp"
+                android:layout_margin="4dp"
+                android:inputType="textAutoComplete"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/etUF"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:background="@drawable/seletor_register"
+                android:hint="UF"
+                android:textSize="12dp"
+                android:layout_margin="4dp"
+                android:inputType="textCapCharacters"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:gravity="center"/>
+
+
+            <EditText
+                android:id="@+id/etTelefone"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@drawable/seletor_register"
+                android:hint="Telefone"
+                android:textSize="12dp"
+                android:layout_margin="4dp"
+                android:inputType="phone"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/etNome_usuario"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:background="@drawable/seletor_register"
+        android:hint="Nome Usuário"
+        android:layout_margin="4dp"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/etEmail_usuario"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:background="@drawable/seletor_register"
+        android:hint="Email"
+        android:layout_margin="4dp"
+        android:inputType="textEmailAddress"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/etPassword_usuario"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:background="@drawable/seletor_register"
+        android:hint="Senha"
+        android:layout_margin="4dp"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:gravity="center"/>
+
+
+    <Button
+        android:id="@+id/btnEnviar"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:text="Cadastrar"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/seletor_botao_login"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:text="Login"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:text=" | "/>
+
+        <TextView
+            android:id="@+id/tvRecoverySenha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:text="Esqueceu a Senha?"/>
+
+    </LinearLayout>
 
 </LinearLayout>
