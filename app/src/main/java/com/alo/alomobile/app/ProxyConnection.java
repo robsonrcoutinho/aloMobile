@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import com.alo.alomobile.R;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,14 +24,9 @@ public class ProxyConnection {
     private IStatusRespostaConnection statusConnection;
     private Context context;
 
-    public ProxyConnection(Context context){
+    public ProxyConnection(Context context, IStatusRespostaConnection statusConnection){
         this.context = context;
-
-        try {
-            statusConnection = (IStatusRespostaConnection) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " IStatusRespostaConnection");
-        }
+        this.statusConnection = statusConnection;
 
     }
 
@@ -50,8 +46,9 @@ public class ProxyConnection {
                     @Override
                     public void onResponse(JSONObject response) {
                         hidepDialog();
-                        Log.i(TAG, "Resposta cadastro usuario: " + response.toString());
-                        statusConnection.statusConnectionPost(true, response);
+                        Log.i(TAG, "Encaminhando response para activty:"+
+                                 response.toString());
+                        statusConnection.notifySuccess(response);
                     }
 
                 },
@@ -59,11 +56,12 @@ public class ProxyConnection {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         onLoginFailed();
-                        statusConnection.statusConnectionPost(false, null);
+                        statusConnection.notifyError(error);
+
                     }
                 }
         ) ;
-
+        req.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Application.getInstance().addToRequestQueue(req);
 
     }
@@ -71,14 +69,12 @@ public class ProxyConnection {
     private void onLoginFailed() {
         Log.i(TAG, "onLoginFailed()");
         hidepDialog();
-
     }
 
     private void hidepDialog(){
         if(pDialog != null){
             pDialog.dismiss();
             pDialog = null;
-
         }
     }
 

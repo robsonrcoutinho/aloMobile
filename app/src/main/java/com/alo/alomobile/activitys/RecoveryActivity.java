@@ -14,6 +14,7 @@ import com.alo.alomobile.R;
 import com.alo.alomobile.app.Consts;
 import com.alo.alomobile.app.IStatusRespostaConnection;
 import com.alo.alomobile.app.ProxyConnection;
+import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.HashMap;
  * @Since 26/02/2017
  */
 
-public class RecoveryActivity extends AppCompatActivity implements IStatusRespostaConnection{
+public class RecoveryActivity extends AppCompatActivity{
     private static String TAG = RecoveryActivity.class.getSimpleName();
     private EditText etEmail;
     private Button btnEnviar;
@@ -32,6 +33,7 @@ public class RecoveryActivity extends AppCompatActivity implements IStatusRespos
     private TextView tvRegistrar;
     private HashMap<String, String> params;
     private ProxyConnection pc;
+    private IStatusRespostaConnection mResultCallback = null;
 
     @Override
     public void onCreate(Bundle savedInstancedState){
@@ -93,11 +95,11 @@ public class RecoveryActivity extends AppCompatActivity implements IStatusRespos
         params = new HashMap<String,String>();
         params.put("email", etEmail.getText().toString());
 
-        pc = new ProxyConnection(RecoveryActivity.this);
-        pc.postConnection(Consts.REQUEST_RESET_PASSWORD, params, "Solicitando...");
+        iniciaVolleyCallback();
+        pc = new ProxyConnection(this, mResultCallback);
 
+        pc.postConnection(Consts.REQUEST_RESET_PASSWORD, params, "Solicitando");
     }
-
 
     public boolean validate() {
         boolean valid = true;
@@ -115,31 +117,38 @@ public class RecoveryActivity extends AppCompatActivity implements IStatusRespos
     }
 
 
-    @Override
-    public boolean statusConnectionPost(boolean status, JSONObject response) {
-        if(status != false){
-            Log.i(TAG, response.toString());
-            try{
-                String statusRec = response.getString("status");
-                Log.i("status", String.valueOf(status));
+    void iniciaVolleyCallback(){
+        mResultCallback = new IStatusRespostaConnection() {
+            @Override
+            public void notifySuccess(JSONObject response) {
+                Log.d(TAG, "Volley JSON post" + response);
+                try {
+                    String status = response.getString("status");
+                    if(status.equals("sucesso")){
+                        Toast.makeText(getBaseContext(), "Verifique link de redefinição de senha em seu email!",
+                                Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(RecoveryActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }else {
+                        btnEnviar.setEnabled(true);
+                        Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
+                    }
 
-                if(statusRec.equals("sucesso")){
-                    Intent intent = new Intent(RecoveryActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }else {
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    btnEnviar.setEnabled(true);
                     Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
                 }
 
-            }catch (JSONException e) {
-                e.printStackTrace();
-            };
-            return true;
+            }
 
-        }else {
-            btnEnviar.setEnabled(true);
-            Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
-            return false;
-        }
+            @Override
+            public void notifyError(VolleyError error) {
+                Log.d(TAG, "Volley JSON post error:" + error.toString());
+                btnEnviar.setEnabled(true);
+                Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
+            }
+        };
     }
     }
 

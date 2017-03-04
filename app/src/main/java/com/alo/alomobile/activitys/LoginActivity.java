@@ -1,6 +1,5 @@
 package com.alo.alomobile.activitys;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,20 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alo.alomobile.R;
-import com.alo.alomobile.app.Application;
 import com.alo.alomobile.app.Consts;
-import com.android.volley.Request;
-import com.android.volley.Response;
+import com.alo.alomobile.app.IStatusRespostaConnection;
+import com.alo.alomobile.app.ProxyConnection;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @version 1.0
@@ -37,10 +30,11 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private HashMap<String, String> params;
-    private ProgressDialog pDialog;
     private TextView registrar;
     private TextView tvRecSenha;
     private Button btnLogin;
+    private IStatusRespostaConnection mResultCallback = null;
+    private ProxyConnection pc;
 
 
     @Override
@@ -79,8 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     @Override
@@ -95,12 +87,6 @@ public class LoginActivity extends AppCompatActivity {
         Log.i(TAG, ".onStop()");
     }
 
-    private void hidePDialog() {
-        if (pDialog != null) {
-            pDialog.dismiss();
-            pDialog = null;
-        }
-    }
 
     public void login(){
         Log.i(TAG, ".login()");
@@ -110,53 +96,13 @@ public class LoginActivity extends AppCompatActivity {
         }
         btnLogin.setEnabled(false);
 
-        pDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        pDialog.setIndeterminate(true);
-        pDialog.setMessage("Autenticando...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-
         params = new HashMap<String,String>();
         params.put("email", etEmail.getText().toString());
         params.put("password", etPassword.getText().toString());
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
-                Consts.REQUEST_LOGIN,
-                new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i(TAG, "Token Response: " + response.toString());
-                        hidePDialog();
-                     try{
-                        String user_token = response.getString("token");
-                        getSharedPreferences("alo_prefs", getApplicationContext().MODE_PRIVATE).edit().remove("alo_prefs").apply();
-                        getSharedPreferences("alo_prefs", getApplicationContext().MODE_PRIVATE).edit()
-                                .putString("token", user_token).apply();
-
-                        Log.i("token", String.valueOf(user_token));
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-
-                    }catch (JSONException e) {
-                        e.printStackTrace();
-                    };
-
-                }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        onLoginFailed();
-                    }
-                }
-        ) ;
-
-        Application.getInstance().addToRequestQueue(req);
-
+        iniciaVolleyCallback();
+        pc = new ProxyConnection(this, mResultCallback);
+        pc.postConnection(Consts.REQUEST_LOGIN, params,"Autenticando...");
 
     }
 
@@ -183,10 +129,31 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
+    void iniciaVolleyCallback(){
+        mResultCallback = new IStatusRespostaConnection() {
+            @Override
+            public void notifySuccess(JSONObject response) {
+                try{
+                    String user_token = response.getString("token");
+                    getSharedPreferences("alo_prefs", getApplicationContext().MODE_PRIVATE).edit().remove("alo_prefs").apply();
+                    getSharedPreferences("alo_prefs", getApplicationContext().MODE_PRIVATE).edit()
+                            .putString("token", user_token).apply();
 
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Dados de acesso incorretos!", Toast.LENGTH_LONG).show();
-        hidePDialog();
-        btnLogin.setEnabled(true);
+                    Log.i("token", String.valueOf(user_token));
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getBaseContext(), "Dados de acesso incorretos!", Toast.LENGTH_LONG).show();
+                };
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                Toast.makeText(getBaseContext(), "Dados de acesso incorretos!", Toast.LENGTH_LONG).show();
+            }
+        };
     }
 }

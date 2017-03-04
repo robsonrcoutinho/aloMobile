@@ -1,4 +1,6 @@
 package com.alo.alomobile.app;
+import com.android.volley.VolleyError;
+
 import org.json.JSONObject;
 
 /**
@@ -8,5 +10,7 @@ import org.json.JSONObject;
  */
 
 public interface IStatusRespostaConnection {
-    public boolean statusConnectionPost(boolean status, JSONObject resposta);
+    public void notifySuccess(JSONObject response);
+    public void notifyError(VolleyError error);
+
 }

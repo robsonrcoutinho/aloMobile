@@ -1,5 +1,6 @@
 package com.alo.alomobile.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.alo.alomobile.R;
 import com.alo.alomobile.app.Consts;
 import com.alo.alomobile.app.IStatusRespostaConnection;
 import com.alo.alomobile.app.ProxyConnection;
+import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
@@ -24,7 +26,7 @@ import java.util.HashMap;
  * @Since 26/02/2017
  */
 
-public class RegistrarActivity extends AppCompatActivity implements IStatusRespostaConnection{
+public class RegistrarActivity extends AppCompatActivity{
     private static String TAG = RegistrarActivity.class.getSimpleName();
     private EditText etRazaoSocial;
     private EditText etNomeFantasia;
@@ -42,6 +44,7 @@ public class RegistrarActivity extends AppCompatActivity implements IStatusRespo
     private Button btnRegister;
     private HashMap<String, String> params;
     private ProxyConnection pc;
+    private IStatusRespostaConnection mResultCallback = null;
 
     @Override
     public void onCreate(Bundle savedInstancedState){
@@ -70,6 +73,24 @@ public class RegistrarActivity extends AppCompatActivity implements IStatusRespo
                 registrar();
             }
         });
+
+        recSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 
@@ -105,11 +126,14 @@ public class RegistrarActivity extends AppCompatActivity implements IStatusRespo
         params.put("uf", etUF.getText().toString());
         params.put("cnpj_cpf", etCNPJ_CPF.getText().toString());
         params.put("name", etNomeUsuario.getText().toString());
-
-        pc = new ProxyConnection(RegistrarActivity.this);
-        pc.postConnection(Consts.REQUEST_REGISTER, params, "Cadastrando...");
-
         btnRegister.setEnabled(true);
+
+
+        iniciaVolleyCallback();
+        pc = new ProxyConnection(this, mResultCallback);
+        pc.postConnection(Consts.REQUEST_REGISTER,params,"Registrando...");
+
+
     }
 
     public boolean validate() {
@@ -200,18 +224,19 @@ public class RegistrarActivity extends AppCompatActivity implements IStatusRespo
         return valid;
     }
 
-    @Override
-    public boolean statusConnectionPost(boolean status, JSONObject response) {
+    void iniciaVolleyCallback(){
+        mResultCallback = new IStatusRespostaConnection() {
+            @Override
+            public void notifySuccess(JSONObject response) {
 
-        if(status != false){
-            Log.i(TAG, response.toString());
-            //Tratar resposta aqui
-            return true;
-        }else {
-            btnRegister.setEnabled(true);
-            Toast.makeText(getBaseContext(), "Erro: Verifique seus dados cadastrais!", Toast.LENGTH_LONG).show();
-            return false;
-        }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+
+            }
+        };
+
     }
 }
 
