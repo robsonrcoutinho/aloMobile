@@ -26,7 +26,6 @@ public class Application extends android.app.Application {
         mInstance = this;
     }
 
-
     public static synchronized Application getInstance() {
         return mInstance;
     }

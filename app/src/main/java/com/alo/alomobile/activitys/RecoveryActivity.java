@@ -1,6 +1,5 @@
 package com.alo.alomobile.activitys;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,19 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alo.alomobile.R;
-import com.alo.alomobile.app.Application;
 import com.alo.alomobile.app.Consts;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
+import com.alo.alomobile.app.IStatusRespostaConnection;
+import com.alo.alomobile.app.ProxyConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 
 /**
@@ -32,14 +24,14 @@ import java.util.HashMap;
  * @Since 26/02/2017
  */
 
-public class RecoveryActivity extends AppCompatActivity{
+public class RecoveryActivity extends AppCompatActivity implements IStatusRespostaConnection{
     private static String TAG = RecoveryActivity.class.getSimpleName();
     private EditText etEmail;
     private Button btnEnviar;
     private TextView tvLogin;
     private TextView tvRegistrar;
-    private ProgressDialog pDialog;
     private HashMap<String, String> params;
+    private ProxyConnection pc;
 
     @Override
     public void onCreate(Bundle savedInstancedState){
@@ -89,15 +81,7 @@ public class RecoveryActivity extends AppCompatActivity{
         Log.i(TAG, ".onStop()");
     }
 
-    private void hidePDialog() {
-        if (pDialog != null) {
-            pDialog.dismiss();
-            pDialog = null;
-        }
-    }
-
-
-    public void recoverySenha(){
+      public void recoverySenha(){
         Log.i(TAG, ".recoverySenha()");
 
         if (!validate()) {
@@ -106,52 +90,11 @@ public class RecoveryActivity extends AppCompatActivity{
         btnEnviar.setEnabled(false);
 
 
-        pDialog = new ProgressDialog(RecoveryActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        pDialog.setIndeterminate(true);
-        pDialog.setMessage("Solicitando...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-
         params = new HashMap<String,String>();
         params.put("email", etEmail.getText().toString());
 
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
-                Consts.REQUEST_RESET_PASSWORD,
-                new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i(TAG, "Status recovery senha:" + response.toString());
-                        hidePDialog();
-                        try{
-                            String status = response.getString("status");
-                            Log.i("status", String.valueOf(status));
-
-                            if(status.equals("sucesso")){
-                                Intent intent = new Intent(RecoveryActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }else {
-                                onLoginFailed();
-                            }
-
-                        }catch (JSONException e) {
-                            e.printStackTrace();
-                        };
-
-                    }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        onLoginFailed();
-                    }
-                }
-        ) ;
-
-        Application.getInstance().addToRequestQueue(req);
+        pc = new ProxyConnection(RecoveryActivity.this);
+        pc.postConnection(Consts.REQUEST_RESET_PASSWORD, params, "Solicitando...");
 
     }
 
@@ -171,9 +114,32 @@ public class RecoveryActivity extends AppCompatActivity{
         return valid;
     }
 
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
-        hidePDialog();
-        btnEnviar.setEnabled(true);
+
+    @Override
+    public boolean statusConnectionPost(boolean status, JSONObject response) {
+        if(status != false){
+            Log.i(TAG, response.toString());
+            try{
+                String statusRec = response.getString("status");
+                Log.i("status", String.valueOf(status));
+
+                if(statusRec.equals("sucesso")){
+                    Intent intent = new Intent(RecoveryActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
+                }
+
+            }catch (JSONException e) {
+                e.printStackTrace();
+            };
+            return true;
+
+        }else {
+            btnEnviar.setEnabled(true);
+            Toast.makeText(getBaseContext(), "Erro: Verifique se email está correto!", Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
-}
+    }
+
