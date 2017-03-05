@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
 import com.alo.alomobile.R;
 import com.alo.alomobile.app.Application;
 import com.alo.alomobile.app.Util;
@@ -32,17 +34,17 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SharedPreferences prefs;
-    private String myToken;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG,"onCreate()");
         super.onCreate(savedInstanceState);
 
         prefs = getSharedPreferences("alo_prefs", MainActivity.MODE_PRIVATE);
 
-        if (!Util.existeToken(prefs)) { // existe usuário associado ao device
+        if (!Util.existeToken(prefs)) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            finish();
             MainActivity.this.startActivity(intent);
         }
 
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configViewPager(ViewPager viewPager) {
+        Log.i(TAG,"configViewPager()");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new MenuFragment(), "MenuFragment");
         adapter.addFrag(new ManagerUserFragment(), "ManagerUserFragment");
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configTabIcons() {
+        Log.i(TAG,"configTabIcons()");
         int[] tabIcons = {
                 R.drawable.cart,
                 R.drawable.user,

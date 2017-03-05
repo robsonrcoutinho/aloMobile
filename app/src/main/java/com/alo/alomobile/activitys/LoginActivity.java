@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     private IStatusRespostaConnection mResultCallback = null;
     private ProxyConnection pc;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i("token", String.valueOf(user_token));
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    finish();
                     startActivity(intent);
 
                 }catch (JSONException e) {
