@@ -16,6 +16,7 @@ import com.alo.alomobile.app.IStatusRespostaConnection;
 import com.alo.alomobile.app.ProxyConnection;
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -89,9 +90,6 @@ public class RegistrarActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override
@@ -127,7 +125,6 @@ public class RegistrarActivity extends AppCompatActivity{
         params.put("cnpj_cpf", etCNPJ_CPF.getText().toString());
         params.put("name", etNomeUsuario.getText().toString());
         btnRegister.setEnabled(true);
-
 
         iniciaVolleyCallback();
         pc = new ProxyConnection(this, mResultCallback);
@@ -227,13 +224,32 @@ public class RegistrarActivity extends AppCompatActivity{
     void iniciaVolleyCallback(){
         mResultCallback = new IStatusRespostaConnection() {
             @Override
-            public void notifySuccess(JSONObject response) {
+            public void notifySuccess(JSONObject response){
+
+                try {
+                    String resposta = response.getString("user");
+                    if(resposta.equals("create_sucess")){
+                        Toast.makeText(getBaseContext(), "Conta criada com sucesso. Faça login com email e senha cadastrados!",
+                                Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(RegistrarActivity.this, LoginActivity.class);
+                        finish();
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(getBaseContext(), "Falha no resgitro! Tente novamente!",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getBaseContext(), "Falha no resgitro! Tente novamente!",
+                            Toast.LENGTH_LONG).show();
+                }
 
             }
 
             @Override
             public void notifyError(VolleyError error) {
-
+                Log.d(TAG, error.toString());
             }
         };
 

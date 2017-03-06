@@ -128,6 +128,7 @@ public class RecoveryActivity extends AppCompatActivity{
                         Toast.makeText(getBaseContext(), "Verifique link de redefinição de senha em seu email!",
                                 Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(RecoveryActivity.this, LoginActivity.class);
+                        finish();
                         startActivity(intent);
                     }else {
                         btnEnviar.setEnabled(true);
