@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.alo.alomobile.R;
 import com.alo.alomobile.app.Consts;
-import com.alo.alomobile.app.IStatusRespostaConnection;
+import com.alo.alomobile.app.IStatusPostConnection;
 import com.alo.alomobile.app.ProxyConnection;
 import com.android.volley.VolleyError;
 import org.json.JSONException;
@@ -33,7 +33,7 @@ public class RecoveryActivity extends AppCompatActivity{
     private TextView tvRegistrar;
     private HashMap<String, String> params;
     private ProxyConnection pc;
-    private IStatusRespostaConnection mResultCallback = null;
+    private IStatusPostConnection mResultCallback = null;
 
     @Override
     public void onCreate(Bundle savedInstancedState){
@@ -98,7 +98,7 @@ public class RecoveryActivity extends AppCompatActivity{
         iniciaVolleyCallback();
         pc = new ProxyConnection(this, mResultCallback);
 
-        pc.postConnection(Consts.REQUEST_RESET_PASSWORD, params, "Solicitando");
+        pc.postConnection(Consts.REQUEST_RESET_PASSWORD, params, "Enviando");
     }
 
     public boolean validate() {
@@ -118,7 +118,7 @@ public class RecoveryActivity extends AppCompatActivity{
 
 
     void iniciaVolleyCallback(){
-        mResultCallback = new IStatusRespostaConnection() {
+        mResultCallback = new IStatusPostConnection() {
             @Override
             public void notifySuccess(JSONObject response) {
                 Log.d(TAG, "Volley JSON post" + response);

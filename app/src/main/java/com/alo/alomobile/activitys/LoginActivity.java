@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.alo.alomobile.R;
 import com.alo.alomobile.app.Consts;
-import com.alo.alomobile.app.IStatusRespostaConnection;
+import com.alo.alomobile.app.IStatusPostConnection;
 import com.alo.alomobile.app.ProxyConnection;
 import com.android.volley.VolleyError;
 import org.json.JSONException;
@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView registrar;
     private TextView tvRecSenha;
     private Button btnLogin;
-    private IStatusRespostaConnection mResultCallback = null;
+    private IStatusPostConnection mResultCallback = null;
     private ProxyConnection pc;
 
     @Override
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
         iniciaVolleyCallback();
         pc = new ProxyConnection(this, mResultCallback);
-        pc.postConnection(Consts.REQUEST_LOGIN, params,"Autenticando...");
+        pc.postConnection(Consts.REQUEST_LOGIN, params,"Autenticando");
 
     }
 
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void iniciaVolleyCallback(){
-        mResultCallback = new IStatusRespostaConnection() {
+        mResultCallback = new IStatusPostConnection() {
             @Override
             public void notifySuccess(JSONObject response) {
                 try{

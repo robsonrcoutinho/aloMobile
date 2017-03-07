@@ -12,13 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.alo.alomobile.R;
 import com.alo.alomobile.app.Consts;
-import com.alo.alomobile.app.IStatusRespostaConnection;
+import com.alo.alomobile.app.IStatusPostConnection;
 import com.alo.alomobile.app.ProxyConnection;
 import com.android.volley.VolleyError;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 
 /**
@@ -45,7 +43,7 @@ public class RegistrarActivity extends AppCompatActivity{
     private Button btnRegister;
     private HashMap<String, String> params;
     private ProxyConnection pc;
-    private IStatusRespostaConnection mResultCallback = null;
+    private IStatusPostConnection mResultCallback = null;
 
     @Override
     public void onCreate(Bundle savedInstancedState){
@@ -128,7 +126,7 @@ public class RegistrarActivity extends AppCompatActivity{
 
         iniciaVolleyCallback();
         pc = new ProxyConnection(this, mResultCallback);
-        pc.postConnection(Consts.REQUEST_REGISTER,params,"Registrando...");
+        pc.postConnection(Consts.REQUEST_REGISTER,params,"Registrando");
 
 
     }
@@ -222,7 +220,7 @@ public class RegistrarActivity extends AppCompatActivity{
     }
 
     void iniciaVolleyCallback(){
-        mResultCallback = new IStatusRespostaConnection() {
+        mResultCallback = new IStatusPostConnection() {
             @Override
             public void notifySuccess(JSONObject response){
 

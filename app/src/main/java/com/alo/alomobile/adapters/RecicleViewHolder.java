@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.alo.alomobile.R;
 import com.alo.alomobile.activitys.MensagemActivity;
 import com.alo.alomobile.activitys.PedidoActivity;
-import com.alo.alomobile.activitys.ProdutosActivity;
+import com.alo.alomobile.activitys.CategoriasActivity;
 import com.alo.alomobile.activitys.PromocaoActivity;
 
 /**
@@ -39,7 +39,7 @@ public class RecicleViewHolder extends RecyclerView.ViewHolder implements View.O
 
         switch (position){
             case 0:
-                intent = new Intent(context,ProdutosActivity.class);
+                intent = new Intent(context,CategoriasActivity.class);
                 context.startActivity(intent);
                 break;
             case 1:

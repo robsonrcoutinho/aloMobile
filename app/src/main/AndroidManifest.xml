@@ -28,7 +28,7 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <activity android:name="com.alo.alomobile.activitys.ProdutosActivity"
+        <activity android:name="com.alo.alomobile.activitys.CategoriasActivity"
             android:screenOrientation="portrait" >
         </activity>
 

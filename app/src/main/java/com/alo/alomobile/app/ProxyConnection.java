@@ -8,7 +8,9 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.HashMap;
 
@@ -21,21 +23,30 @@ import java.util.HashMap;
 public class ProxyConnection {
     private static String TAG = ProxyConnection.class.getSimpleName();
     private ProgressDialog pDialog;
-    private IStatusRespostaConnection statusConnection;
+    private IStatusPostConnection statusConnection;
+    private IStatusGetConnection statusGetConnection;
     private Context context;
 
-    public ProxyConnection(Context context, IStatusRespostaConnection statusConnection){
+
+    public ProxyConnection(Context context, IStatusPostConnection statusConnection){
         this.context = context;
         this.statusConnection = statusConnection;
-
     }
+
+    public ProxyConnection(Context context, IStatusGetConnection statusGetConnection){
+        this.context = context;
+        this.statusGetConnection = statusGetConnection;
+    }
+
+
 
     public void postConnection(String url, HashMap<String, String> params, String msgDialog){
 
         pDialog = new ProgressDialog(context,
                 R.style.AppTheme_Dark_Dialog);
         pDialog.setIndeterminate(true);
-        pDialog.setMessage(msgDialog);
+        pDialog.setTitle(msgDialog);
+        pDialog.setMessage("Aguarde...");
         pDialog.setCancelable(false);
         pDialog.show();
 
@@ -65,6 +76,45 @@ public class ProxyConnection {
         Application.getInstance().addToRequestQueue(req);
 
     }
+
+
+    public void getJsonArrayConnection(String url, String msgDialog){
+
+        pDialog = new ProgressDialog(context,
+                R.style.AppTheme_Dark_Dialog);
+        pDialog.setIndeterminate(true);
+        pDialog.setTitle(msgDialog);
+        pDialog.setMessage("Aguarde...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET,
+                url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        hidepDialog();
+                        Log.i(TAG, "Encaminhando response para activty:"+
+                                response.toString());
+                        statusGetConnection.notifySuccess(response);
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onLoginFailed();
+                        statusGetConnection.notifyError(error);
+
+                    }
+                }
+        ) ;
+        req.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Application.getInstance().addToRequestQueue(req);
+
+    }
+
+
 
     private void onLoginFailed() {
         Log.i(TAG, "onLoginFailed()");

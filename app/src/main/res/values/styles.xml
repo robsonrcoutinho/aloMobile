@@ -15,4 +15,8 @@
         <item name="android:background">@color/progress_dialog</item>
     </style>
 
+
+    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 </resources>
