@@ -18,5 +18,9 @@
     <color name="list_row_end_color">#ffffff</color>
 
 
+    <color name="genre">#666666</color>
+    <color name="year">#888888</color>
+
+
 
 </resources>

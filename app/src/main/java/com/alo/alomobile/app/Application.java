@@ -3,6 +3,7 @@ package com.alo.alomobile.app;
 import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 /**
@@ -12,13 +13,12 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class Application extends android.app.Application {
+    private ImageLoader mImageLoader;
+    private RequestQueue mRequestQueue;
+    private static Application mInstance;
 
     public static final String TAG = Application.class
             .getSimpleName();
-
-    private RequestQueue mRequestQueue;
-
-    private static Application mInstance;
 
     @Override
     public void onCreate() {
@@ -28,6 +28,15 @@ public class Application extends android.app.Application {
 
     public static synchronized Application getInstance() {
         return mInstance;
+    }
+
+    public ImageLoader getImageLoader(){
+        getRequestQueue();
+        if(mImageLoader == null){
+            mImageLoader  = new ImageLoader(this.mRequestQueue, new LruBitmapCache());
+        }
+        return this.mImageLoader;
+
     }
 
     public RequestQueue getRequestQueue() {

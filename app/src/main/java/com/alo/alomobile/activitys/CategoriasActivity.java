@@ -14,7 +14,7 @@ import com.alo.alomobile.adapters.CategoriaAdapter;
 import com.alo.alomobile.app.Consts;
 import com.alo.alomobile.app.IStatusGetConnection;
 import com.alo.alomobile.app.ProxyConnection;
-import com.alo.alomobile.models.Categoria;
+import com.alo.alomobile.model.Categoria;
 import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONException;

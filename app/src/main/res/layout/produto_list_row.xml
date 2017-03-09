@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:background="@drawable/seletor_list_row"
+    android:layout_height="wrap_content"
+    android:padding="8dp" >
+
+    <!-- Thumbnail Imagem -->
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/thumbnail_prod"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp" />
+
+    <!-- Nome Produto  -->
+    <TextView
+        android:id="@+id/tv_nome_produto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail_prod"
+        android:textSize="@dimen/title"
+        android:layout_toRightOf="@+id/thumbnail_prod"
+        android:textStyle="bold" />
+
+    <!-- preço -->
+    <TextView
+        android:id="@+id/tv_preco_produto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_nome_produto"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail_prod"
+        android:textSize="@dimen/rating" />
+      />
+
+    <!-- Marca -->
+    <TextView
+        android:id="@+id/tv_marca_produto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_preco_produto"
+        android:layout_toRightOf="@+id/thumbnail_prod"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/genre" />
+
+</RelativeLayout>

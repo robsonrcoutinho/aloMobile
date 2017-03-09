@@ -13,7 +13,7 @@ public class Consts {
     public static final String REQUEST_RESET_PASSWORD = ROOT+"api/resetEmail";
     public static final String REQUEST_REGISTER = ROOT+"api/createUser";
     public static final String GET_CATEGORIA = ROOT+"api/getCategorias";
-
+    public static final String REQUEST_PRODUTOS = ROOT+"api/getProdutosMarcas";
 
     public static final String TOKEN = "token";
 }

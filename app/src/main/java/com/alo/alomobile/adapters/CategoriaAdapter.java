@@ -3,7 +3,6 @@ package com.alo.alomobile.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,8 @@ import android.widget.TextView;
 
 import com.alo.alomobile.R;
 import com.alo.alomobile.activitys.MainActivity;
-import com.alo.alomobile.models.Categoria;
+import com.alo.alomobile.activitys.ProdutoActivity;
+import com.alo.alomobile.model.Categoria;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class CategoriaAdapter extends BaseAdapter{
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, MainActivity.class);
+                Intent intent = new Intent(activity, ProdutoActivity.class);
                 activity.finish();
                 context.startActivity(intent);
             }

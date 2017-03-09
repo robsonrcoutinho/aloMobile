@@ -1,4 +1,4 @@
-package com.alo.alomobile.models;
+package com.alo.alomobile.model;
 
 import java.util.Comparator;
 
