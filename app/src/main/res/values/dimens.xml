@@ -6,8 +6,8 @@
     <dimen name="nome_categoria">17dp</dimen>
 
 
-    <dimen name="title">17dp</dimen>
-    <dimen name="rating">15dip</dimen>
-    <dimen name="genre">13dip</dimen>
-    <dimen name="year">12dip</dimen>
+    <dimen name="nome">17dp</dimen>
+    <dimen name="preco">15dip</dimen>
+    <dimen name="marca">12dip</dimen>
+
 </resources>

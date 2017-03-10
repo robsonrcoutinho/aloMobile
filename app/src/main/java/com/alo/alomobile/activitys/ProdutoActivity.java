@@ -38,7 +38,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private ProdutoAdapter adapter;
     private ListView listView;
     private JSONArray jsonArrayItens;
-   // String URL = "http://192.168.0.102/PHP_REST/resposta.php";
+    String URL = "http://192.168.0.102/PHP_REST/resposta.php";
 
 
     @Override
@@ -81,8 +81,8 @@ public class ProdutoActivity extends AppCompatActivity {
         iniciaVolleyRequest();
 
         pc = new ProxyConnection(this, mCallBack);
-        pc.getJSONOBJECTConnection(Consts.REQUEST_PRODUTOS,"Buscando Produtos");
-       //pc.getJSONOBJECTConnection(URL,"Buscando Produtos");
+       // pc.getJSONOBJECTConnection(Consts.REQUEST_PRODUTOS,"Buscando Produtos");
+       pc.getJSONOBJECTConnection(URL,"Buscando Produtos");
 
    }
 
@@ -100,11 +100,13 @@ public class ProdutoActivity extends AppCompatActivity {
 
                         Item item =  new Item();
                         item.setNome(obj.getString("nome_produto"));
-                        item.setPreco(obj.getString("valor"));
+                        String ic = "R$ " + obj.getString("valor");
+                        item.setPreco(ic);
+
                         String image = obj.getString("imagem");
 
                         Log.i("IMAGEM",Consts.ROOT + image);
-                        item.setImagem(Consts.ROOT + image);
+                        item.setImagem(image);
 
                         JSONObject obj2 = obj.getJSONObject("marca");
                         item.setMarca(obj2.getString("marca"));

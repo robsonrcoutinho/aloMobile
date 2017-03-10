@@ -70,7 +70,7 @@ public class ProdutoAdapter extends BaseAdapter {
 
         // thumbnail image
         Log.i("LOG IMAGEM: ", m.getImagem().toString());
-        thumbNail.setImageUrl("Preço: " +m.getImagem(), imageLoader);
+        thumbNail.setImageUrl(m.getImagem(), imageLoader);
 
         // nome produto
         nomeProduto.setText(m.getNome());

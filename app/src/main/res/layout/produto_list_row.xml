@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail_prod"
-        android:textSize="@dimen/title"
+        android:textSize="@dimen/nome"
         android:layout_toRightOf="@+id/thumbnail_prod"
         android:textStyle="bold" />
 
@@ -31,10 +31,10 @@
         android:layout_below="@id/tv_nome_produto"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail_prod"
-        android:textSize="@dimen/rating" />
+        android:textSize="@dimen/preco" />
       />
 
-    <!-- Marca -->
+    <!-- Marca
     <TextView
         android:id="@+id/tv_marca_produto"
         android:layout_width="fill_parent"
@@ -42,6 +42,15 @@
         android:layout_below="@id/tv_preco_produto"
         android:layout_toRightOf="@+id/thumbnail_prod"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/genre" />
+        android:textSize="@dimen/marca" /> -->
+
+    <TextView
+        android:id="@+id/tv_marca_produto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/marca_color"
+        android:textSize="@dimen/marca" />
 
 </RelativeLayout>
